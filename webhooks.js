@@ -11,6 +11,8 @@ function run_cmd(cmd, args, callback) {
     child.stdout.on('data', function (buffer) { resp += buffer.toString(); });
     child.stdout.on('end', function () { callback(resp) });
 }
+// debug用
+run_cmd('sh', ['./deploy-dev.sh'], function(text){ console.log(text) });
 
 http.createServer(function (req, res) {
     handler(req, res, function (err) {
@@ -24,10 +26,10 @@ handler.on('error', function (err) {
 })
 
 
-handler.on('*', function (event) {
-    console.log('Received *', event.payload.action);
-    //   run_cmd('sh', ['./deploy-dev.sh'], function(text){ console.log(text) });
-})
+// handler.on('*', function (event) {
+//     console.log('Received *', event.payload.action);
+//     //   run_cmd('sh', ['./deploy-dev.sh'], function(text){ console.log(text) });
+// })
 
 handler.on('push', function (event) {
     console.log('Received a push event for %s to %s',
@@ -41,11 +43,11 @@ handler.on('push', function (event) {
 })
 
 
-handler.on('issues', function (event) {
-    console.log('Received an issue event for % action=%s: #%d %s',
-        event.payload.repository.name,
-        event.payload.action,
-        event.payload.issue.number,
-        event.payload.issue.title)
-})
+// handler.on('issues', function (event) {
+//     console.log('Received an issue event for % action=%s: #%d %s',
+//         event.payload.repository.name,
+//         event.payload.action,
+//         event.payload.issue.number,
+//         event.payload.issue.title)
+// })
 
