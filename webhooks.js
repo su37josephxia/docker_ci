@@ -15,11 +15,14 @@ function run_cmd(cmd, args, callback) {
 // run_cmd('sh', ['./deploy-dev.sh'], function(text){ console.log(text) });
 
 http.createServer(function (req, res) {
+
     handler(req, res, function (err) {
         res.statusCode = 404
         res.end('no such location')
     })
-}).listen(7777)
+}).listen(7777,() =>{
+    console.log('WebHooks Listern at 7777');
+})
 
 handler.on('error', function (err) {
     console.error('Error:', err.message)
