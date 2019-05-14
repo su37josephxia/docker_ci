@@ -7,8 +7,8 @@ services:
       # 需要链接本地代码时
       # volumes:
       #   - ./backend:/usr/src/app
-      # ports:
-      #   - "3000:3000"
+      ports:
+        - "3000:3000"
   mongo:
     image: mongo
     restart: always

@@ -2,37 +2,24 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const app = express()
-// const log4js = require('log4js');
-// const logger = log4js.getLogger();
-// logger.level = 'error';
-// logger.error("Some debug messages");
-// logger.trace('Entering cheese testing');
-// logger.debug('Got cheese.');
-// logger.info('Cheese is Comté.');
-// logger.warn('Cheese is quite smelly.');
-// logger.error('Cheese is too ripe!');
-// logger.fatal('Cheese was breeding ground for listeria.');
-
 
 app.use(express.static('static'))
-
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
 
-
-const course = JSON.parse(fs.readFileSync(path.resolve(__dirname, './goods.json')).toString())
-
+const course = JSON.parse(fs.readFileSync(path.resolve(__dirname, './models/goods.json')).toString())
 const allData = []
-
 course.tags.forEach(key => {
   course.data[key].forEach(cor => {
     allData.push(cor)
   })
 })
 
+const mongo = require("./models/db");
+const testdata = require("./models/init");
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -43,7 +30,8 @@ app.use(function (req, res, next) {
 });
 
 
-app.get('/api/top', (req, res) => {
+app.get('/api/top', async (req, res) => {
+  const allData  = await mongo.col("goods").find().toArray()
   const newData = [...allData]
   newData.sort((a, b) => {
     return b.solded - a.solded
@@ -53,9 +41,10 @@ app.get('/api/top', (req, res) => {
     data: newData.slice(0, 5)
   })
 })
-app.get("/api/goods", (req, res) => {
-  const page = req.query.page || 1
 
+app.get("/api/goods", async (req, res) => {
+  const allData = await mongo.col("goods").find().toArray()
+  const page = req.query.page || 1
   const start = (page - 1) * 10
   const end = start + 10
   setTimeout(() => {
@@ -66,7 +55,8 @@ app.get("/api/goods", (req, res) => {
   }, 1000)
 })
 
-app.get('/api/detail', (req, res) => {
+app.get('/api/detail', async (req, res) => {
+
   const { id } = req.query
   course.tags.forEach(key => {
     course.data[key].forEach(cor => {
