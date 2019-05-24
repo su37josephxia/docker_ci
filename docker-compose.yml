@@ -5,7 +5,7 @@ services:
       #构建容器
       build: ./backend
       #直接从git拉去
-      #build: git@github.com:su37josephxia/docker_ci.git#:backend
+      # build: git@github.com:su37josephxia/docker_ci.git#:backend
       # 需要链接本地代码时
       # volumes:
       #   - ./backend:/usr/src/app
@@ -28,5 +28,5 @@ services:
       - 8091:80
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d
-      - ./frontend/dist/:/var/www/html/
+      - ./frontend/dist/h5:/var/www/html/
       - ./static/:/static/
