@@ -16,11 +16,11 @@ services:
     restart: always
     ports:
       - 27017:27017
-  mongo-express:
-    image: mongo-express
-    restart: always 
-    ports:
-      - 8081:8081
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always 
+  #   ports:
+  #     - 8081:8081
   nginx:
     restart: always
     image: nginx
